@@ -1,4 +1,5 @@
 #Elaborado por: Joaquin Correa (201730895), Andres Molano (201814276), Ricardo Rodriguez(201822271)
+#Fecha: 13 de marzo de 2021
 
 #Eliminar objetos antiguos
 rm(list=ls())
@@ -18,7 +19,7 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
   v_2 = as.matrix(seq(1,99,2))
   v_2
 
-  #Se utilizan los anteriores vectores para crear un vector de números pares (1-100)
+  #Se utilizan los anteriores vectores para crear un vector de numeros pares (1-100)
   v_3 = as.matrix(v_1[-v_2])
   v_3
 
@@ -38,19 +39,19 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
     #Se nombran las columnas con los nombres de la primera fila restante
     names(cultivos) <- cultivos[1,]
 
-    #Se elimina la primera fila que contiene los nombres porque ya cumplió su utilidad
+    #Se elimina la primera fila que contiene los nombres porque ya cumplio su utilidad
     cultivos = cultivos[-1,]
 
-    #Se eliminan las filas que solo contienen NA en los nombres de los municipios (Especificaban el total de cada municipio pero solo contenían NA)
+    #Se eliminan las filas que solo contienen NA en los nombres de los municipios (Especificaban el total de cada municipio pero solo contenian NA)
     cultivos = subset(cultivos, is.na(MUNICIPIO) == F)
 
-    #Se elimina la última fila de referencias
+    #Se elimina la ultima fila de referencias
     cultivos = cultivos[-329,]
 
     #Ver base de datos limpia
     View(cultivos)
 
-    #Se creat otra base de datos que contiene las columnas que nos interesan para pasar de wide-long
+    #Se crea otra base de datos que contiene las columnas que nos interesan para pasar de wide-long
     cultivos_2 = cultivos[,-(1:3)]
     
     #Se pivotea base (pasar a formato long)
@@ -65,7 +66,7 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
   personas = readRDS(file ="data/input/2019/Cabecera - Caracteristicas generales (Personas).rds")
   ocupados = readRDS(file = "data/input/2019/Cabecera - Ocupados.rds")
     
-  # Para verificar en "personas" que los individuos tengan identificadores únicos se hace lo siguiente: 
+  # Para verificar en "personas" que los individuos tengan identificadores unicos se hace lo siguiente: 
   
   duplicated(personas$directorio) %>% table()
   
@@ -73,7 +74,7 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
   
   duplicated(paste0(personas$directorio,personas$secuencia_p,personas$orden)) %>% table() #No hay duplicados teniendo en cuenta el orden
   
-  # Para verificar en "ocupados" que los individuos tengan identificadores únicos se hace lo siguiente:
+  # Para verificar en "ocupados" que los individuos tengan identificadores unicos se hace lo siguiente:
   
   duplicated(ocupados$directorio) %>% table()
   
@@ -94,7 +95,7 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
 
   #Tablas que se pueden apreciar en la consolar
   
-  #Media, conteo y varianza de ocupados (categorizado por género)
+  #Media, conteo y varianza de ocupados (categorizado por genero)
   cabecera %>% group_by(P6020) %>% summarise(promedio=mean(Oci))
   cabecera %>% group_by(P6020) %>% summarise(num=sum(Oci))
   cabecera %>% group_by(P6020) %>% summarise (var=var(Oci))
@@ -104,12 +105,12 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
   cabecera %>% group_by(P6040) %>% summarise(num=sum(Oci))
   cabecera %>% group_by(P6040) %>% summarise (var=var(Oci))
   
-  #Media, conteo y varianza de ocupados (categorizado por tipo de ocupación)
+  #Media, conteo y varianza de ocupados (categorizado por tipo de ocupacion)
   cabecera %>% group_by(P6430) %>% summarise(promedio=mean(Oci))
   cabecera %>% group_by(P6430) %>% summarise(num=sum(Oci))
   cabecera %>% group_by(P6430) %>% summarise (var=var(Oci))
   
-  #Media, conteo y varianza de ocupados (categorizado por tipo de área)
+  #Media, conteo y varianza de ocupados (categorizado por tipo de area)
   cabecera %>% group_by(area.x) %>% summarise(promedio=mean(Oci))
   cabecera %>% group_by(area.x) %>% summarise(num=sum(Oci))
   cabecera %>% group_by(area.x) %>% summarise (var=var(Oci))
@@ -121,7 +122,7 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
   cabecera %>% group_by(dpto.x) %>% summarize(salario = weighted.mean(x = P6500))
   
   
-  ###Ahora, para hacer los gráficos podemos denotar las variables categóricas relevantes con el fin de identificar mejor los ejes
+  ###Ahora, para hacer los graficos podemos denotar las variables categoricas relevantes con el fin de identificar mejor los ejes
   cabecera = mutate(cabecera , Oci = ifelse(Oci==1,'Ocupado','Desocupado'))
   cabecera = mutate(cabecera , P6020 = ifelse(P6020==1,'Hombre','Mujer'))
   
@@ -135,21 +136,21 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
   
   #Grafico de frecuencia entre ocupados vs desocupados (segun sexo)
   s = ggplot() + geom_bar(data = cabecera, aes(x = P6020 , colour = Oci , fill = Oci))
-  s = s + labs(title = "Ocupados vs Desocupados", subtitle = "Según sexo", x = "Sexo",y = "Frecuencia")
+  s = s + labs(title = "Ocupados vs Desocupados", subtitle = "Segun sexo", x = "Sexo",y = "Frecuencia")
   s  
   
   ggsave(plot= s , file = "views/Ocupados vs Desocupados, segun sexo.jpeg")
   
   #Grafico de frecuencia entre ocupados vs desocupados (segun edad)
   ed = ggplot() + geom_bar(data = cabecera, aes(x = P6040 , colour = Oci , fill = Oci))
-  ed = ed + labs(title = "Ocupados vs Desocupados", subtitle = "Según edad", x = "Edad",y = "Frecuencia")
+  ed = ed + labs(title = "Ocupados vs Desocupados", subtitle = "Segun edad", x = "Edad",y = "Frecuencia")
   ed  
   
   ggsave(plot= ed , file = "views/Ocupados vs Desocupados, segun edad.jpeg")
   
   #Grafico de salario contra edad (segun sexo)
   q = cabecera %>% group_by(P6040, P6020) %>% summarize(salario = weighted.mean(x = P6500)) %>% ggplot() + geom_point(aes(x=P6040 ,y=salario,group=P6020,shape=P6020, colour = P6020), size=3) + theme_light()
-  q = q + labs(title = "Salario por edad", subtitle = "Según sexo", x = "Edad",y = "Salario")
+  q = q + labs(title = "Salario por edad", subtitle = "Segun sexo", x = "Edad",y = "Salario")
   q
   
   ggsave(plot= q , file = "views/Salario contra edad, segun sexo.jpeg")
