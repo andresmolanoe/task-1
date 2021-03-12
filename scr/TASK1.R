@@ -7,7 +7,7 @@ rm(list=ls())
 pacman::p_load(tidyverse,reshape2,readxl)
 
 #Fijar carpeta de trabajo
-setwd ("/Users/joaquincorreabotero/Documents/Sexto semestre/R/task-1-main")
+setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
 
 #1. Vectores
   #Se crea vector del 1 al 100
@@ -129,25 +129,28 @@ setwd ("/Users/joaquincorreabotero/Documents/Sexto semestre/R/task-1-main")
   #Grafico de frecuencia entre ocupados vs desocupados 
   p = ggplot() + geom_bar(data = cabecera, aes(x = Oci , colour = Oci , fill = Oci))
   p = p + labs(title = "Ocupados vs Desocupados", subtitle = "(2019)", x = "Ocupados",y = "Frecuencia")
-  p  
+  p
+  
+  ggsave(plot= p , file = "views/Ocupados vs Desocupados.jpeg")
   
   #Grafico de frecuencia entre ocupados vs desocupados (segun sexo)
   s = ggplot() + geom_bar(data = cabecera, aes(x = P6020 , colour = Oci , fill = Oci))
   s = s + labs(title = "Ocupados vs Desocupados", subtitle = "Según sexo", x = "Sexo",y = "Frecuencia")
   s  
   
+  ggsave(plot= s , file = "views/Ocupados vs Desocupados, segun sexo.jpeg")
+  
   #Grafico de frecuencia entre ocupados vs desocupados (segun edad)
   ed = ggplot() + geom_bar(data = cabecera, aes(x = P6040 , colour = Oci , fill = Oci))
   ed = ed + labs(title = "Ocupados vs Desocupados", subtitle = "Según edad", x = "Edad",y = "Frecuencia")
   ed  
+  
+  ggsave(plot= ed , file = "views/Ocupados vs Desocupados, segun edad.jpeg")
   
   #Grafico de salario contra edad (segun sexo)
   q = cabecera %>% group_by(P6040, P6020) %>% summarize(salario = weighted.mean(x = P6500)) %>% ggplot() + geom_point(aes(x=P6040 ,y=salario,group=P6020,shape=P6020, colour = P6020), size=3) + theme_light()
   q = q + labs(title = "Salario por edad", subtitle = "Según sexo", x = "Edad",y = "Salario")
   q
   
-  #Tabla de estadisticas descriptivas (SOS)
-  cabecera %>% group_by(dpto.x,P6020) %>% summarize(salario = weighted.mean(x = P6500)) %>%
-    ggplot() + geom_point(aes(x=dpto.x,y=salario,group=P6020,shape=P6020,colour=P6020),size=3) + theme_light() # color y shape por tipo
-  
+  ggsave(plot= q , file = "views/Salario contra edad, segun sexo.jpeg")
   
