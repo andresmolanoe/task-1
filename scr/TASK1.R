@@ -8,21 +8,33 @@ rm(list=ls())
 pacman::p_load(tidyverse,reshape2,readxl)
 
 #Fijar carpeta de trabajo
-setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
+setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1") # Esto no es necesario porque estamos usando un prueycto de R
 
 #1. Vectores
   #Se crea vector del 1 al 100
-  v_1 = as.matrix(1:100)
+  v_1 = as.matrix(1:100) # no es necesario usar as.matrix()
   v_1
 
   #Se crea vector de numeros impares (1-99)
-  v_2 = as.matrix(seq(1,99,2))
+  v_2 = as.matrix(seq(1,99,2)) # no es necesario usar as.matrix()
   v_2
 
   #Se utilizan los anteriores vectores para crear un vector de numeros pares (1-100)
-  v_3 = as.matrix(v_1[-v_2])
+  v_3 = as.matrix(v_1[-v_2]) # no es necesario usar as.matrix()
   v_3
 
+cat("Otra forma de hacerlo")
+# Vector 1 al 100
+vector = c(1:100)
+vector
+
+# vector impares
+impares = seq(1,99,2)
+impares
+
+# vector pares
+pares = vector[!vector %in% impares]
+pares
 
 #2.Limpiar una base de datos
   
@@ -61,6 +73,19 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
     cultivos_long2 = mutate(cultivos_long, cultivos_coca = ifelse(test = is.na(cultivos_coca) == T, yes = 0, no = cultivos_coca))
     View(cultivos_long2)
 
+cat("Podriamos ser más eficientes con el código, veamos otra forma:")
+# cargar datos
+cultivos = read_excel("data/input/cultivos.xlsx", range="A9:Y362")
+
+# filtrar observaciones
+cultivos = subset(cultivos , is.na(CODMPIO)==F)
+
+# pivotear la base de datos
+cultivos = pivot_longer(data=cultivos , cols="1999":"2019" , names_to="year" , values_to="hectareas")
+
+# rellenar NA's
+cultivos = mutate(cultivos, hectareas = ifelse(is.na(hectareas)==T,0,hectareas))
+    
 #3. GEIH
   #3.1 Se importan las nuevas bases de datos
   personas = readRDS(file ="data/input/2019/Cabecera - Caracteristicas generales (Personas).rds")
@@ -86,7 +111,7 @@ setwd ("/Users/ANDRES MOLANO/OneDrive/Documentos/2021-1/Taller de R/task-1")
   cabecera = full_join(x = personas , y = ocupados , by = c('directorio','secuencia_p','orden'))
     
   #3.2 Descriptivas
-  library(ggplot2)
+  library(ggplot2) # Ya habías llamado la librería al principio del script
   summary(cabecera)
 
   #Se reemplazan los NA en las variables Oci y P6500
